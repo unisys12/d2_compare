@@ -1,6 +1,6 @@
-module ListActivities
+module Activities
 
-    def all
+    def list_all
         Mongo::Logger.level = Logger::FATAL
         client = Mongo::Client.new(ENV['DB_URL'])
 
@@ -9,28 +9,28 @@ module ListActivities
         activity_defs.aggregate([
         { "$match" => { 'isPvP' => false } },
         { 
-        "$lookup" => {
-            "localField" => "destinationHash",
-            "foreignField" => "hash",
-            "from" => "DestinyDestinationDefinition",
-            "as" => "destination"
+            "$lookup" => {
+                "localField" => "destinationHash",
+                "foreignField" => "hash",
+                "from" => "DestinyDestinationDefinition",
+                "as" => "destination"
             }
         },
         { 
-        "$lookup" => {
-            "localField" => "placeHash",
-            "foreignField" => "hash",
-            "from" => "DestinyPlaceDefinition",
-            "as" => "place"
-        }
+            "$lookup" => {
+                "localField" => "placeHash",
+                "foreignField" => "hash",
+                "from" => "DestinyPlaceDefinition",
+                "as" => "place"
+            }
         },
         { 
-        "$lookup" => {
-            "localField" => "activityTypeHash",
-            "foreignField" => "hash",
-            "from" => "DestinyActivityTypeDefinition",
-            "as" => "activityType"
-        }
+            "$lookup" => {
+                "localField" => "activityTypeHash",
+                "foreignField" => "hash",
+                "from" => "DestinyActivityTypeDefinition",
+                "as" => "activityType"
+            }
         },
         {
             "$project" => {
